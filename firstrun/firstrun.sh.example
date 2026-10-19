@@ -1,0 +1,21 @@
+#!/bin/bash
+# Optional Raspberry Pi OS first-boot stub (advanced).
+# Prefer Raspberry Pi Imager OS customisation for hostname/SSH/Wi-Fi.
+# If you use a firstrun script mechanism, copy this logic carefully and test on a spare card.
+set -euo pipefail
+
+HOSTNAME="${HOSTNAME_OVERRIDE:-pi-low-power}"
+hostnamectl set-hostname "$HOSTNAME"
+
+# Install only after networking is up (Ethernet preferred).
+apt-get update
+apt-get install -y git curl ca-certificates
+
+# Next manual steps after first SSH (do not automate Tailscale auth here):
+#   1) clone this repo
+#   2) ./scripts/mount-ssd.sh
+#   3) ./scripts/install-docker.sh && newgrp docker
+#   4) ./scripts/install-tailscale.sh
+#   5) ./scripts/bring-up-foundation.sh
+
+echo "firstrun stub complete on $(hostname)"

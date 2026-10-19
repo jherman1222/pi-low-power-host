@@ -1,0 +1,65 @@
+# Copy into <DATA_ROOT>/homeassistant/packages/ and enable packages in configuration.yaml.
+mqtt:
+  sensor:
+    - name: "Victron SmartShunt Battery Voltage"
+      unique_id: victron_smartshunt_battery_voltage
+      state_topic: "victron/smartshunt/state"
+      availability_topic: "victron/smartshunt/availability"
+      value_template: "{{ value_json.V | default(none) }}"
+      unit_of_measurement: "V"
+      device_class: voltage
+      state_class: measurement
+
+    - name: "Victron SmartShunt Current"
+      unique_id: victron_smartshunt_current
+      state_topic: "victron/smartshunt/state"
+      availability_topic: "victron/smartshunt/availability"
+      value_template: "{{ value_json.I | default(none) }}"
+      unit_of_measurement: "A"
+      device_class: current
+      state_class: measurement
+
+    - name: "Victron SmartShunt State of Charge"
+      unique_id: victron_smartshunt_soc
+      state_topic: "victron/smartshunt/state"
+      availability_topic: "victron/smartshunt/availability"
+      value_template: "{{ value_json.SOC | default(none) }}"
+      unit_of_measurement: "%"
+      device_class: battery
+      state_class: measurement
+
+    - name: "Victron SmartShunt Power"
+      unique_id: victron_smartshunt_power
+      state_topic: "victron/smartshunt/state"
+      availability_topic: "victron/smartshunt/availability"
+      value_template: "{{ value_json.P | default(none) }}"
+      unit_of_measurement: "W"
+      device_class: power
+      state_class: measurement
+
+    - name: "Victron SmartSolar Battery Voltage"
+      unique_id: victron_smartsolar_battery_voltage
+      state_topic: "victron/smartsolar/state"
+      availability_topic: "victron/smartsolar/availability"
+      value_template: "{{ value_json.V | default(none) }}"
+      unit_of_measurement: "V"
+      device_class: voltage
+      state_class: measurement
+
+    - name: "Victron SmartSolar Panel Voltage"
+      unique_id: victron_smartsolar_panel_voltage
+      state_topic: "victron/smartsolar/state"
+      availability_topic: "victron/smartsolar/availability"
+      value_template: "{{ value_json.VPV | default(none) }}"
+      unit_of_measurement: "V"
+      device_class: voltage
+      state_class: measurement
+
+    - name: "Victron SmartSolar Panel Power"
+      unique_id: victron_smartsolar_panel_power
+      state_topic: "victron/smartsolar/state"
+      availability_topic: "victron/smartsolar/availability"
+      value_template: "{{ value_json.PPV | default(none) }}"
+      unit_of_measurement: "W"
+      device_class: power
+      state_class: measurement

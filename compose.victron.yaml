@@ -1,0 +1,53 @@
+# VE.Direct → MQTT bridges (one container per isolated USB cable).
+# Requires foundation stack running (external network pi-low-power_default).
+# See ORION.md — Orion-Tr Smart has no VE.Direct port.
+name: victron-mqtt
+
+x-vedirect: &vedirect
+  build:
+    context: ./docker/vedirect-mqtt
+  image: local/vedirect-mqtt:pi
+  restart: unless-stopped
+  init: true
+  group_add:
+    - dialout
+  networks:
+    - pi-low-power
+  security_opt:
+    - no-new-privileges:true
+
+services:
+  smartshunt:
+    <<: *vedirect
+    container_name: vedirect-smartshunt
+    environment:
+      MQTT_HOST: mosquitto
+      MQTT_PORT: "1883"
+      MQTT_USERNAME: ${MQTT_USER}
+      MQTT_PASSWORD: ${MQTT_PASSWORD}
+      MQTT_PREFIX: victron/smartshunt
+      SERIAL_DEVICE: /dev/vedirect
+      SERIAL_BAUD: "19200"
+      PUBLISH_INTERVAL: "2"
+    devices:
+      - ${VE_DIRECT_SHUNT:?set VE_DIRECT_SHUNT to /dev/serial/by-id/...}:/dev/vedirect
+
+  smartsolar:
+    <<: *vedirect
+    container_name: vedirect-smartsolar
+    environment:
+      MQTT_HOST: mosquitto
+      MQTT_PORT: "1883"
+      MQTT_USERNAME: ${MQTT_USER}
+      MQTT_PASSWORD: ${MQTT_PASSWORD}
+      MQTT_PREFIX: victron/smartsolar
+      SERIAL_DEVICE: /dev/vedirect
+      SERIAL_BAUD: "19200"
+      PUBLISH_INTERVAL: "2"
+    devices:
+      - ${VE_DIRECT_MPPT:?set VE_DIRECT_MPPT to /dev/serial/by-id/...}:/dev/vedirect
+
+networks:
+  pi-low-power:
+    external: true
+    name: pi-low-power_default

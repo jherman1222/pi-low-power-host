@@ -1,0 +1,9 @@
+# Compatibility shim — prefer the split compose files documented in README.md:
+#
+#   docker compose -f compose.yaml up -d                 # Mosquitto + HA
+#   docker compose -f compose.workloads.yaml up -d       # Discord bot
+#   docker compose -f compose.victron.yaml up -d --build # VE.Direct bridges
+#
+# This file includes the foundation stack only so `docker compose up -d` still works.
+include:
+  - path: compose.yaml

@@ -1,0 +1,9 @@
+# Generate a real passwd file on the Pi (do not commit secrets):
+#
+#   docker run --rm -v "$PWD/mosquitto/config:/mosquitto/config" eclipse-mosquitto:2 \
+#     mosquitto_passwd -c -b /mosquitto/config/passwd "$MQTT_USER" "$MQTT_PASSWORD"
+#
+# Or locally after apt install mosquitto-clients:
+#   mosquitto_passwd -c mosquitto/config/passwd pi
+#
+# Placeholder line below is invalid on purpose — replace via mosquitto_passwd.

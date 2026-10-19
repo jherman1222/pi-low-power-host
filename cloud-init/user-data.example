@@ -1,0 +1,33 @@
+#cloud-config
+# Ubuntu Server 24.04 on Raspberry Pi — place as `user-data` on the system-boot
+# partition (alongside network-config) OR paste equivalent settings in Raspberry Pi Imager.
+#
+# Replace ssh_authorized_keys with your Mac public key before first boot.
+# Prefer Ethernet; omit wifi section when a cable is available.
+
+hostname: pi-low-power
+manage_etc_hosts: true
+timezone: America/Los_Angeles
+
+users:
+  - name: pi
+    groups: [adm, sudo, dialout]
+    shell: /bin/bash
+    sudo: ALL=(ALL) NOPASSWD:ALL
+    lock_passwd: true
+    ssh_authorized_keys:
+      - ssh-ed25519 AAAA...REPLACE_WITH_MAC_PUBLIC_KEY... comment@mac
+
+ssh_pwauth: false
+package_update: true
+package_upgrade: true
+
+packages:
+  - git
+  - curl
+  - ca-certificates
+  - unattended-upgrades
+
+runcmd:
+  - [systemctl, enable, --now, ssh]
+  - [timedatectl, set-timezone, America/Los_Angeles]

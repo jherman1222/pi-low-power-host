@@ -1,0 +1,26 @@
+# Copy to victron/config.yml and set serial ports to the *container* device paths
+# (compose maps each by-id host path to /dev/victron-shunt and /dev/victron-mppt).
+#
+# birdie1/victron: https://github.com/birdie1/victron
+# Requires vedirect for serial: https://github.com/karioja/vedirect
+
+devices:
+  - name: SmartShunt
+    type: smartshunt
+    protocol: serial
+    port: /dev/victron-shunt
+  - name: SmartSolar
+    type: smartsolar
+    protocol: serial
+    port: /dev/victron-mppt
+
+logger: mqtt
+
+mqtt:
+  host: mosquitto
+  port: 1883
+  base_topic: victron
+  hass: true
+  # If your build supports auth, match .env MQTT_USER / MQTT_PASSWORD:
+  # username: pi
+  # password: replace-me

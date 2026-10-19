@@ -1,0 +1,24 @@
+# Optional Mac-migrated Discord bot (MetalDetected).
+# Prepare source first: ./scripts/prepare-discord-bot.sh
+# Stop Mac PM2 before first start to avoid duplicate Discord sessions.
+name: pi-workloads
+
+services:
+  metal-detected:
+    build:
+      context: ${DISCORD_BOT_SOURCE:?set DISCORD_BOT_SOURCE in .env}
+      dockerfile: Dockerfile.pi
+    image: local/metal-detected-bot:pi
+    container_name: metal-detected
+    restart: unless-stopped
+    init: true
+    env_file:
+      - ${DISCORD_BOT_SOURCE}/.env
+    environment:
+      TZ: ${TZ:-America/Los_Angeles}
+    volumes:
+      - ${DATA_ROOT:-/srv/pi-data}/metal-detected/archive:/app/bot_archive
+    security_opt:
+      - no-new-privileges:true
+    cap_drop:
+      - ALL

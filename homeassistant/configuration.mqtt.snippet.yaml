@@ -1,0 +1,35 @@
+# Home Assistant MQTT stub
+
+Merge into `/config/configuration.yaml` after first onboard, **or** use UI:
+Settings → Devices & Services → MQTT → broker `127.0.0.1:1883`
+(username/password from `.env`; HA uses `network_mode: host`).
+
+```yaml
+# mqtt:
+#   broker: 127.0.0.1
+#   port: 1883
+#   username: pi
+#   password: !secret mqtt_password
+
+# Example sensors once birdie1/victron (hass: true) or a vedirect bridge publishes.
+# Topic names vary — discover with:
+#   docker exec -it mosquitto mosquitto_sub -v -t 'victron/#' -u pi -P 'yourpass'
+#
+# mqtt:
+#   sensor:
+#     - name: "Battery SOC"
+#       state_topic: "victron/SmartShunt/Soc"
+#       unit_of_measurement: "%"
+#       device_class: battery
+#     - name: "Battery Voltage"
+#       state_topic: "victron/SmartShunt/V"
+#       unit_of_measurement: "V"
+#       device_class: voltage
+#       value_template: "{{ value | float / 1000 }}"
+#     - name: "PV Power"
+#       state_topic: "victron/SmartSolar/P"
+#       unit_of_measurement: "W"
+#       device_class: power
+```
+
+If Home Assistant MQTT discovery is enabled in `victron/config.yml` (`hass: true`), entities may appear automatically under MQTT — prefer that when it works.
